@@ -1,24 +1,17 @@
 <template>
   <Disclosure as="nav" class="bg-white border-b-2" v-slot="{ open }">
-    <div class=" w-full px-2 sm:px-6 lg:px-8 ">
-      <div class="relative flex h-16 items-center justify-between ">
+    <div class="w-full px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
           <!-- Mobile menu button-->
-          <DisclosureButton
-            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-          >
-            <span class="absolute -inset-0.5" />
-            <span class="sr-only">Open main menu</span>
-            <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-            <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
-          </DisclosureButton>
+          <SidebarMobile />
         </div>
         <div
           class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
         >
           <!-- Logo -->
           <AppBarLogo />
-          <h1 class=" mx-3 text-blue-500 text-2xl">Elearning</h1>
+          <h1 class="mx-3 text-blue-500 text-2xl">Elearning</h1>
           <!-- content -->
           <!-- <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
@@ -39,8 +32,9 @@
           </div> -->
         </div>
         <div
-          class="absolute inset-y-0 right-0  flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+          class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
+          <dropDownLanguange class="mx-3"/>
           <!-- Notification button -->
           <button
             type="button"
@@ -53,6 +47,7 @@
 
           <!-- Profile dropdown -->
           <DropDownProfile />
+       
         </div>
       </div>
     </div>
@@ -71,7 +66,7 @@
           :aria-current="item.current ? 'page' : undefined"
           >{{ item.name }}</DisclosureButton
         > -->
-        <SideBar />
+        <SidebarMobile />
       </div>
     </DisclosurePanel>
   </Disclosure>
@@ -83,7 +78,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import DropDownProfile from "./DropDownProfile.vue";
 import AppBarLogo from "./AppBarLogo.vue";
 import SideBar from "../side-bar/SideBar.vue";
-
+import SidebarMobile from "../side-bar/SidebarMobile.vue";
+import dropDownLanguange from "./dropDownLanguage.vue";
 const navigation = [
   { name: "Home", href: "/home", current: false },
   { name: "Students", href: "/students", current: false },

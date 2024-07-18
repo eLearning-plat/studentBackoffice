@@ -1,10 +1,12 @@
 <template>
-  <Menu :model="items" class="w-full h-full md:w-[15rem]">
+  <Menu :model="menuItems" class="w-full md:w-10 overflow-auto hidden md:hiddden sm:block">
     <template #submenuheader="{ item }">
       <span class="text-blue-500 font-bold leading-none">{{ item.label }}</span>
     </template>
     <template #item="{ item, props }">
-      <a v-ripple class="flex items-center" v-bind="props.action" @click="navigateToPage(item.label)">
+      <a v-ripple class="flex items-center no-underline hover:bg-gray-100 my-0 p-2 md:p-3 font-medium"
+         :class="{ 'bg-gray-300': isActive(item.label), 'text-black': !isActive(item.label) }"
+         @click="handleItemClick(item.label)">
         <span :class="item.icon" />
         <span class="ml-2">{{ item.label }}</span>
         <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
@@ -17,75 +19,39 @@
 import Menu from "primevue/menu";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
-const router = useRouter(); // Use the useRouter hook to access the router instance
+const { t } = useI18n();
+const router = useRouter(); 
 
-// Method to navigate based on the item's label
-function navigateToPage(label) {
-  const path = `/${label.toLowerCase()}`; // Convert label to lowercase and prepend with '/'
-  router.push(path); // Use Vue Router's push method to navigate
-}
+let activePath = ref("/dashbord");
 
-const items = ref([
+const menuItems = ref([
   {
-    separator: true,
-  },
-  {
-    label: "Management",
+    label: t("Student space"), 
     items: [
-      {
-        label: "Students",
-        icon: "pi pi-graduation-cap",
-      },
-      {
-        label: "Teachers",
-        icon: "pi pi-user",
-      },
-      {
-        label: "Course",
-        icon: "pi pi-book",
-      },{
-        label: "Profile",
-        icon: "pi pi-book",
-      },
+      { label: t('dashbord'), icon: "pi pi-objects-column" },
+      { label: t('course'), icon: "pi pi-book" },
+      { label: t('profile'), icon: "pi pi-user" },
+      { label: t('document'), icon: "pi pi-briefcase" },
+      { label: t('event'), icon: "pi pi-calendar" },
     ],
-  },
-  {
-    label: "Website",
-    items: [
-      {
-        label: "Informations",
-        icon: "pi pi-info-circle",
-      },
-      {
-        label: "News",
-        icon: "pi pi-megaphone",
-      },
-      {
-        label: "Corners",
-        icon: "pi pi-box",
-      },
-      {
-        label: "Blog",
-        icon: "pi pi-pen-to-square",
-      },
-    ],
-  },
-  {
-    label: "Community",
-    items: [
-      {
-        label: "Messages",
-        icon: "pi pi-envelope",
-      },
-      {
-        label: "Charity",
-        icon: "pi pi-wallet",
-      }
-    ],
-  },
-  {
-    separator: true,
   },
 ]);
+
+function handleItemClick(label) {
+  activePath.value = label; 
+  const path = `/${label.toLowerCase()}`; 
+  router.push(path); 
+}
+
+function isActive(label) {
+  return activePath.value === label;
+}
 </script>
+
+
+
+<style scoped>
+
+</style>
