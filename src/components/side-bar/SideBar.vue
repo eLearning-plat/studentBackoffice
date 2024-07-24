@@ -1,88 +1,27 @@
-<template>
-  <Menu :model="items" class="w-full h-full md:w-[15rem]">
-    <template #submenuheader="{ item }">
-      <span class="text-blue-500 font-bold leading-none">{{ item.label }}</span>
-    </template>
-    <template #item="{ item, props }">
-      <a v-ripple class="flex items-center" v-bind="props.action" @click="navigateToPage(item.label)">
-        <span :class="item.icon" />
-        <span class="ml-2">{{ item.label }}</span>
-        <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
-      </a>
-    </template>
-  </Menu>
-</template>
-
 <script setup>
-import Menu from "primevue/menu";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter(); // Use the useRouter hook to access the router instance
-
-// Method to navigate based on the item's label
-function navigateToPage(label) {
-  const path = `/${label.toLowerCase()}`; // Convert label to lowercase and prepend with '/'
-  router.push(path); // Use Vue Router's push method to navigate
-}
-
-const items = ref([
-  {
-    separator: true,
-  },
-  {
-    label: "Management",
-    items: [
-      {
-        label: "Students",
-        icon: "pi pi-graduation-cap",
-      },
-      {
-        label: "Teachers",
-        icon: "pi pi-user",
-      },
-      {
-        label: "Courses",
-        icon: "pi pi-book",
-      },
-    ],
-  },
-  {
-    label: "Website",
-    items: [
-      {
-        label: "Informations",
-        icon: "pi pi-info-circle",
-      },
-      {
-        label: "News",
-        icon: "pi pi-megaphone",
-      },
-      {
-        label: "Corners",
-        icon: "pi pi-box",
-      },
-      {
-        label: "Blog",
-        icon: "pi pi-pen-to-square",
-      },
-    ],
-  },
-  {
-    label: "Community",
-    items: [
-      {
-        label: "Messages",
-        icon: "pi pi-envelope",
-      },
-      {
-        label: "Charity",
-        icon: "pi pi-wallet",
-      }
-    ],
-  },
-  {
-    separator: true,
-  },
-]);
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import Navigation from "./Navigation.vue";
 </script>
+
+<template>
+  <div className="flex min-h-screen ">
+    <aside
+      className="bg-background border-r border-border flex flex-col justify-between py-6 px-4 transition-all duration-300 md:w-64 md:px-6 lg:w-72"
+    >
+      <div className="flex flex-col gap-6">
+        <Navigation :IsMobile="false"/>
+      </div>
+      
+    </aside>
+    <div className="flex-1" />
+  </div>
+</template>
