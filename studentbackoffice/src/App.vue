@@ -1,14 +1,21 @@
-<script setup>
-import AppBar from "./components/app-bar/AppBar.vue";
-import SideBar from "./components/side-bar/SideBar.vue";
+<script setup lang="js">
+import AppBar from "@/components/app-bar/AppBar.vue";
+import SideBar from "@/components/side-bar/SideBar.vue";
 </script>
 
 <template>
-  <AppBar />
-  <div class="w-full h-screen flex flex-row">
-    <div class="h-lvh hidden sm:block">
-      <SideBar />
+  <div class="flex flex-col h-screen ">
+    <AppBar />
+    <div class="flex flex-row w-full" :style="{ height: 'calc(100vh - 64px)' }">
+      <div class="hidden sm:block">
+        <SideBar />
+      </div>
+      <router-view class="flex-grow overflow-auto mt-0 bg-muted/40" />
     </div>
-    <router-view  />
   </div>
 </template>
+<style >
+body{
+  overflow-y: hidden;
+}
+</style>
