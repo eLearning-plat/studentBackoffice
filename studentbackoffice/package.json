@@ -25,6 +25,7 @@
     "@vueuse/core": "^10.11.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
     "embla-carousel-vue": "^8.1.7",
     "lucide-vue-next": "^0.414.0",
     "radix-vue": "^1.9.2",

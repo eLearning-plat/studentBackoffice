@@ -17,5 +17,6 @@ export default defineConfig({
     host: 'localhost', 
     port: 3002,        
     open: true         
-  },
+  }, 
+  
 })
