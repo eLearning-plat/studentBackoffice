@@ -43,16 +43,9 @@
 
   </div>
 </template>
-
 <script>
-import {
-  mapState,
-  mapActions
-} from 'vuex';
-import {
-  ChevronLeft,
-  Search
-} from 'lucide-vue-next'
+import { mapState, mapActions } from 'vuex';
+import { ChevronLeft, Search } from 'lucide-vue-next';
 import ModalAddCourses from '@/components/modal/modalAddCourses.vue';
 import cardCourseTeacher from '@/components/cards/cardCourseTeacher.vue';
 import paginaTion from '@/components/pagination/paginaTion.vue';
@@ -61,6 +54,8 @@ import CardContent from '../../components/ui/card/CardContent.vue';
 import Input from '../../components/ui/input/Input.vue';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '../../components/ui/select';
 import BreadCrumb from '../../components/bread-crumb/BreadCrumb.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+
 export default {
   name: 'CoursePage',
   components: {
@@ -106,8 +101,11 @@ export default {
     }
   },
   async created() {
+    const { getAccessTokenSilently } = useAuth0();
     try {
-      await this.fetchCourses(); 
+      const token = await getAccessTokenSilently();
+      console.log('token', token)
+      await this.fetchCourses(token);
       
       this.details = this.$store.state.courses.courses;
       console.log('Fetched courses in created:', this.details);
@@ -127,7 +125,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style scoped>

@@ -84,7 +84,7 @@ export default {
       courseDescription: '',
       additionalCourses: '',
       files: [],
-      items: [{ date: '', url: '' }] // Liste d'inputs initiale
+      items: [{ date: '', url: '' }] 
     };
   },
   methods: {
@@ -108,12 +108,11 @@ export default {
       this.$emit('close');
     },
     addInput() {
-      this.items.push({ date: '', url: '' }); // Ajouter un nouvel objet d'inputs
+      this.items.push({ date: '', url: '' }); 
     },
     removeInput(index) {
-      // S'assurer qu'il reste au moins un ensemble d'inputs
       if (this.items.length > 1) {
-        this.items.splice(index, 1); // Supprimer l'objet d'inputs à l'index spécifié
+        this.items.splice(index, 1); 
       }
     }
   }
@@ -132,19 +131,5 @@ export default {
 .max-h-100 {
   max-height: 100px;
 }
-/* .custom-select {
 
-  background-color: white;
-  color: blue;
-  font-weight: bold;
-  border: 2px solid blue;
-  outline: none;
-  box-shadow: none;
-}
-
-.custom-select option {
-  background-color: white;
-  color: blue;
-  font-weight: bold;
-} */
 </style>
