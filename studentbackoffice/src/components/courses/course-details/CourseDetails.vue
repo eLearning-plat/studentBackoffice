@@ -1,20 +1,33 @@
 <script setup lang="js">
+import { ref } from 'vue';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Label } from '../../ui/label';
 import { Textarea } from '../../ui/textarea';
-import {File} from "lucide-vue-next";
+import { File } from "lucide-vue-next";
+import modalAddCourses from '../../modal/modalAddCourses.vue';
 
+const isModalOpen = ref(false);
 
+function openModal() {
+  isModalOpen.value = true;
+}
+
+function closeModal() {
+  isModalOpen.value = false;
+}
+
+function addCourse() {
+  closeModal();
+}
 </script>
 
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Course Details</CardTitle>
-       <!--  <CardDescription>
-      Fill in the details of the course you want to create.
-      </CardDescription> -->
+      <div class="flex justify-between">
+        <CardTitle>Course Details</CardTitle>
+      </div>
     </CardHeader>
     <CardContent>
       <div>
@@ -29,18 +42,15 @@ import {File} from "lucide-vue-next";
                 <p class="text-sm text-muted-foreground">
                   Completed on May 15, 2023
                 </p>
-             
               </div>
             </div>
             <Button
               variant="outline"
               size="sm"
-              class=" border rounded-md px-4 py-2" 
-               
+              class="border rounded-md px-4 py-2"
             >
-            Vue
+              Vue
             </Button>
-      
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -57,9 +67,9 @@ import {File} from "lucide-vue-next";
             <Button
               variant="outline"
               size="sm"
-              class=" px-4 py-2 border rounded-md "
+              class="border rounded-md px-4 py-2"
             >
-            Vue
+              Vue
             </Button>
           </div>
           <div class="flex items-center justify-between">
@@ -69,13 +79,13 @@ import {File} from "lucide-vue-next";
               </div>
               <div>
                 <div class="font-bold">JavaScript Fundamentals</div>
-                <p class="text-sm text-muted-foreground">Not Updateed</p>
+                <p class="text-sm text-muted-foreground">Not Updated</p>
               </div>
             </div>
             <Button
               variant="outline"
-              class=" px-4 py-2 border rounded-md "
               size="sm"
+              class="border rounded-md px-4 py-2"
             >
               Vue
             </Button>

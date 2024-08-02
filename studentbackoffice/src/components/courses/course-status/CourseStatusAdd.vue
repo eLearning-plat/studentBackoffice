@@ -8,14 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
-import { defineProps } from 'vue';
-
-const props = defineProps({
-  courseDetail: {
-    type: Object,
-    required: true
-  }
-});
 </script>
 
 <template>
@@ -24,12 +16,12 @@ const props = defineProps({
       <CardTitle>Course Category</CardTitle>
     </CardHeader>
     <CardContent>
-      <p v-if="courseDetail && courseDetail.category">
-        {{ courseDetail.category }}
-      </p>
-      <p v-else>
-        No category available.
-      </p>
+      <div class="grid gap-6">
+        <div class="grid gap-3">
+          <Label for="status">Status</Label>
+        <h6>waiting</h6>  
+        </div>
+      </div> 
     </CardContent>
   </Card>
 </template>

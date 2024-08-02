@@ -27,16 +27,6 @@
             </SelectContent>
           </Select>
       </header>
-    <!-- <Card class="p-3 mt-2"> -->
-      <div>
-        <div class="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
-          <!-- Select Component -->
-      
-          <div class="flex">
-          
-          </div>
-        </div>
-      </div>
       <div>
         <CardContent class="grid grid-cols-1 mt-2 px-0 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <cardCourseTeacher
@@ -50,11 +40,15 @@
           <paginaTion />
         </div>
       </div>
-    <!-- </Card> -->
+
   </div>
 </template>
 
 <script>
+import {
+  mapState,
+  mapActions
+} from 'vuex';
 import {
   ChevronLeft,
   Search
@@ -85,22 +79,19 @@ export default {
       selectedFilter: '',
       isModalOpen: false,
       searchQuery: '',
-      page:'Courses',
-      links:[
-    {
-        id: 1,
-        title: 'Student Space',
-        link: '',
-    }
-],
-      details: [
-        { title: "Nest", description: "Learn the fundamentals of nest", url: "http://example.com/1", category: "Programming" },
-        { title: "React", description: "Learn the fundamentals of react", url: "http://example.com/2", category: "Programming" },
-        { title: "Vue", description: "Learn the fundamentals of vue", url: "http://example.com/3", category: "Programming" },
-      ]
+      page: 'Courses',
+      links: [
+        {
+          id: 1,
+          title: 'Student Space',
+          link: '',
+        }
+      ],
+      details: []
     };
   },
   methods: {
+    ...mapActions('courses', ['fetchCourses']),
     goToDetails() {
       this.$router.push('/courseDetails');
     },
@@ -111,24 +102,35 @@ export default {
       this.isModalOpen = false;
     },
     addCourse() {
-      // Logic to add course
       this.closeModal();
     }
   },
+  async created() {
+    try {
+      await this.fetchCourses(); 
+      
+      this.details = this.$store.state.courses.courses;
+      console.log('Fetched courses in created:', this.details);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
+  },
   computed: {
+    ...mapState('courses', ['courses']),
     filteredItems() {
+      console.log('details', this.details);
       const query = this.searchQuery.toLowerCase();
-      return this.details.filter(item => 
+      return this.details.filter(item =>
         item.title.toLowerCase().includes(query) &&
         (this.selectedFilter === '' || item.category === this.selectedFilter)
       );
     }
   }
 };
+
 </script>
 
 <style scoped>
-/* Ensure the SelectContent is visible */
 .SelectContent {
   position: absolute;
   z-index: 10;
