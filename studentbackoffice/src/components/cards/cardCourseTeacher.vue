@@ -7,7 +7,7 @@
     <div class="grid-container">
       <div class="image-container">
         <img
-          src="@/assets/nest.png"
+          :src="detail.image"
           alt="Course thumbnail"
           width="300"
           height="200"
@@ -35,10 +35,10 @@
   <h1 class="font-bold mx-2">{{ detail.title }}</h1>
   
   <div class="flex gap-2 mt-2 mx-2">
-    <Button size="sm" class="bg-blue-500 text-white rounded-md px-2 py-1" @click="push()">Details</Button>
-    <Button size="sm" variant="outline" class="border px-2 py-1  rounded">
-      Delete
-    </Button>
+    <Button size="sm" class="bg-blue-500 text-white rounded-md px-2 py-1" @click="push(detail._id)">Details</Button>
+    <!-- <Button size="sm" variant="outline" class="border px-2 py-1  rounded">
+      Subscribe
+    </Button> -->
   </div>
 
 
@@ -69,9 +69,11 @@ export default {
     },
   },
   methods: {
-    push(){
-      this.$router.push('/courseDetails')
-    },
+   
+      push(courseId){
+      console.log(courseId)
+      this.$router.push(`/courseDetails/${courseId}`);
+      },
     goToDetails() {
       this.$emit(this.go-to-details);
     },

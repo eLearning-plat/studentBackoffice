@@ -15,45 +15,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  courseDetail: {
+    type: Object,
+    required: true
+  }
+});
+
 </script>
 
 <template>
   <Card class="overflow-hidden">
     <CardHeader>
       <CardTitle>Course imgs</CardTitle>
-      <CardDescription> Upload your images here </CardDescription>
+      <CardDescription>Upload your images here</CardDescription>
     </CardHeader>
     <CardContent>
       <div class="grid gap-2">
         <img
+          v-if="courseDetail && courseDetail.image"
           alt="Product image"
           class="aspect-square w-full rounded-md object-cover"
           height="300"
-          src="@/assets/vue.svg"
+          :src="courseDetail.image"
           width="300"
         />
-        <div class="grid grid-cols-3 gap-2">
-          <button>
-            <img
-              alt="Product image"
-              class="aspect-square w-full rounded-md object-cover"
-              height="84"
-              src="@/assets/vue.svg"
-              width="84"
-            />
-          </button>
-          <button>
-            <img
-              alt="Product image"
-              class="aspect-square w-full rounded-md object-cover"
-              height="84"
-              src="@/assets/vue.svg"
-              width="84"
-            />
-          </button>
-        
-        </div>
+        <p v-else>No image available</p>
       </div>
     </CardContent>
   </Card>
 </template>
+

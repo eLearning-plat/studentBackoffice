@@ -9,51 +9,35 @@
         
         <form @submit.prevent="handleClose">
           <div class="mb-4">
-            <!-- <input
-              v-model="currentEventDetails.title"
-              type="text"
-              placeholder="Event Title"
-              class="w-full border-2 border-gray-400 text-gray-400 rounded-md p-2"
-            /> -->
+         
             <h2>Event Title</h2>
+            {{ currentEventDetails.title }}
           </div>
           <div class="mb-4">
-            <!-- <textarea
-              v-model="currentEventDetails.description"
-              placeholder="Event Description"
-              class="w-full border-2 text-gray-400 border-gray-400 rounded-md p-2"
-            ></textarea> -->
+          
             <p>Description</p>
+            {{currentEventDetails.description}}
           </div>
           <div class="mb-4">
-            <!-- <input
-              type="datetime-local"
-              v-model="currentEventDetails.start"
-              class="w-full border-2 border-gray-400 text-gray-400 rounded-md p-2"
-            /> -->
+         
             <div>start date</div>
+            {{ formattedStart }}
           </div>
           <div class="mb-4">
-            <!-- <input
-              type="datetime-local"
-              v-model="currentEventDetails.end"
-              class="w-full border-2 border-gray-400 text-gray-400 rounded-md p-2"
-            /> -->
+          
             <div>end date</div>
+            {{ formattedEnd }}
           </div>
-          <div class="mb-4">
-            <!-- <input
-              type="checkbox"
-              v-model="currentEventDetails.allDay"
-            /> -->
-            {{$t('All Day Event')}}
+          <div>
+            <a :href="currentEventDetails.url">{{currentEventDetails.url}}</a>
           </div>
+          
           <div class="flex justify-end">
             <button
               type="submit"
               class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              {{$t('Detail Event')}}
+              {{$t('Close')}}
             </button>
           </div>
         </form>
@@ -62,8 +46,8 @@
   </template>
   
   <script setup>
-  import { ref, defineProps, defineEmits } from 'vue';
   
+import { ref, computed, defineProps, defineEmits } from 'vue';
   const props = defineProps({
     isOpen: Boolean,
     currentEventDetails: Object
@@ -78,5 +62,19 @@
   function handleUpdateEvent() {
     emits('update-event', props.currentEventDetails);
   }
+  
+function formatDateForInput(date) {
+  if (!date) return '';
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+const formattedStart = computed(() => formatDateForInput(props.currentEventDetails.start));
+
+const formattedEnd = computed(() => formatDateForInput(props.currentEventDetails.end));
   </script>
   

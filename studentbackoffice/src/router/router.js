@@ -106,7 +106,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/courseDetails",
+    path: "/courseDetails/:id",
     name: "CourseDetails",
     component: () => import("../pages/courses/CourseDetails.vue"),
     beforeEnter: authGuard,
