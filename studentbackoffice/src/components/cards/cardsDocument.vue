@@ -29,7 +29,7 @@ export default {
       if (fileUrl) {
         const link = document.createElement('a');
         link.href = fileUrl;
-        link.download = fileUrl.substring(fileUrl.lastIndexOf('/') + 1); // Use the filename from the URL
+        link.download = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
         link.click();
       } else {
         console.error('File URL is not available.');
@@ -38,7 +38,7 @@ export default {
   },
 
     mounted() {
-    // Log the props when the component is mounted
+  
     console.log('Document prop:', this.document);
   }
 }

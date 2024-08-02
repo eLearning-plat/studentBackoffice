@@ -27,7 +27,6 @@ const actions = {
   fetchCourses({ commit }) {
     return axios.get('http://localhost:3000/api/courses')
       .then(response => {
-        console.log('res.data', response.data)
         commit('SET_COURSES', response.data);
       })
       .catch(error => {
