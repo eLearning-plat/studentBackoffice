@@ -46,7 +46,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('documents', ['addDocument']),
+    ...mapActions('documents'),
 
   },
   computed: {

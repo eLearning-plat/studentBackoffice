@@ -2,35 +2,41 @@
 import {
   ChevronLeft,
   Search
-} from 'lucide-vue-next'
+} from 'lucide-vue-next';
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import BreadCrumb from '../../components/bread-crumb/BreadCrumb.vue'
-import CourseDetails from '../../components/courses/course-details/CourseDetails.vue'
-import CourseStatus from '../../components/courses/course-status/CourseStatus.vue'
-import CourseCategory from '../../components/courses/course-category/CourseCategory.vue'
-import CourseImages from '../../components/courses/course-images/CourseImages.vue'
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import BreadCrumb from '../../components/bread-crumb/BreadCrumb.vue';
+import CourseDetails from '../../components/courses/course-details/CourseDetails.vue';
+import CourseStatus from '../../components/courses/course-status/CourseStatus.vue';
+import CourseCategory from '../../components/courses/course-category/CourseCategory.vue';
+import CourseImages from '../../components/courses/course-images/CourseImages.vue';
+import CourseDesciption from '../../components/courses/course-Desciption/CourseDesciption.vue';
 import { useRoute } from 'vue-router';
-import {ref, onMounted ,computed , watch} from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import CourseDesciption from '../../components/courses/course-Desciption/CourseDesciption.vue'
-import { defineProps } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 const props = defineProps({
   courseDetail: Object,
-  coursId:String
+  coursId: String
 });
+
 const route = useRoute();
 const courseId = route.params.id;
 const course = ref(null);
 const store = useStore();
+const { getAccessTokenSilently } = useAuth0();
 const courses = computed(() => store.state.courses.courses);
 
 onMounted(async () => {
   try {
-    course.value = await store.dispatch('courses/getCourseById', courseId);
+    // Obtenir le jeton d'accès
+    const token = await getAccessTokenSilently();
+    
+    // Passer le jeton d'accès à l'action Vuex pour récupérer les détails du cours
+    course.value = await store.dispatch('courses/getCourseById', { courseId, token });
     console.log('Fetched course:', course.value);
   } catch (error) {
     console.error('Error fetching course details:', error);
@@ -42,19 +48,20 @@ watch(courses, (newCourses) => {
   course.value = fetchedCourse || null;
   console.log('Updated course:', course.value);
 });
-const links=[
-    {
-        id: 1,
-        title: 'Student Space',
-        link: '',
-    },
-    {
-        id: 2,
-        title: 'Courses',
-        link: '/course',
-    },
-]
-const page = "Course details"
+
+const links = [
+  {
+    id: 1,
+    title: 'Student Space',
+    link: '',
+  },
+  {
+    id: 2,
+    title: 'Courses',
+    link: '/course',
+  },
+];
+const page = "Course details";
 
 </script>
 

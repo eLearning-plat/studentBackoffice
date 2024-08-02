@@ -1,6 +1,8 @@
 // store/modules/courses.js
 import axios from 'axios';
+
 const apiUrl = import.meta.env.VITE_APP_API_URL;
+
 const state = {
   courses: []
 };
@@ -9,13 +11,13 @@ const mutations = {
   SET_COURSES(state, courses) {
     state.courses = courses;
   },
-  ADD_COURSES(state, courses) {
-    state.courses.push(courses);
+  ADD_COURSES(state, course) {
+    state.courses.push(course);
   },
-  UPDATE_COURSES(state, updatedcourses) {
-    const index = state.courses.findIndex(course => course.id === updatedcourses.id);
+  UPDATE_COURSES(state, updatedCourse) {
+    const index = state.courses.findIndex(course => course.id === updatedCourse.id);
     if (index !== -1) {
-      state.courses.splice(index, 1, updatedcourses);
+      state.courses.splice(index, 1, updatedCourse);
     }
   },
   DELETE_COURSES(state, courseId) {
@@ -24,67 +26,78 @@ const mutations = {
 };
 
 const actions = {
-  fetchCourses({ commit }) {
-    return axios.get(`${apiUrl}/courses`)
-      .then(response => {
-        commit('SET_COURSES', response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the courses:', error);
+  async fetchCourses({ commit }, token) {
+    try {
+      const response = await axios.get(`${apiUrl}/courses`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
+      commit('SET_COURSES', response.data);
+    } catch (error) {
+      console.error('There was an error fetching the courses:', error);
+    }
   },
-  async getCourseById({ state }, courseId) {
+
+  async getCourseById({ state }, { courseId, token }) {
     try {
       const course = state.courses.find(course => course.id === courseId);
       if (course) {
         return course;
       }
-
-      const response = await axios.get(`${apiUrl}/courses/${courseId}`);
+      const response = await axios.get(`${apiUrl}/courses/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       return response.data;
     } catch (error) {
       console.error('Error fetching course by ID:', error);
       throw error;
     }
   },
-  async addCourses({ dispatch }, newCourse) {
+
+  async addCourses({ dispatch }, { newCourse, token }) {
     try {
-      console.log('newCourse', newCourse)
       const res = await axios.post(`${apiUrl}/courses`, newCourse, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
         }
       });
-     console.log('res.data', res.data)
-      await dispatch('fetchCourses'); 
- 
-      return res.data
+      await dispatch('fetchCourses', token);
+      return res.data;
     } catch (error) {
       console.error('Error adding course:', error);
-      throw error; 
+      throw error;
     }
   },
 
-  async updateCourses({ commit }, { id, updatedData }) {
-    
-      try{
-      await axios.put(`${apiUrl}/courses/${id}`, updatedData)
-        commit('UPDATE_COURSES', updatedcourses);
-      }
-      catch(error){
-    
-      };
-  },
- async deleteCourses({ commit , dispatch}, courseId) {
-    return await axios.delete(`${apiUrl}/courses/${courseId}`)
-
-      .then(async() => {
-        await dispatch('fetchCourses'); 
-        commit('DELETE_COURSES', courseId);
-      })
-      .catch(error => {
-        console.error('There was an error deleting the courses:', error);
+  async updateCourses({ commit }, { id, updatedData, token }) {
+    try {
+      const response = await axios.put(`${apiUrl}/courses/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
+      commit('UPDATE_COURSES', response.data);
+    } catch (error) {
+      console.error('Error updating course:', error);
+    }
+  },
+
+  async deleteCourses({ commit, dispatch }, { courseId, token }) {
+    try {
+      await axios.delete(`${apiUrl}/courses/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      await dispatch('fetchCourses', token);
+      commit('DELETE_COURSES', courseId);
+    } catch (error) {
+      console.error('There was an error deleting the courses:', error);
+    }
   }
 };
 

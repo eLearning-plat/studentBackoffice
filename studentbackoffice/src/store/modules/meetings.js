@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-vue';
+
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 const state = {
   meetings: []
@@ -26,27 +28,34 @@ const mutations = {
 
 const actions = {
   async fetchMeetings({ commit }, query = {}) {
-    return await axios.get(`${apiUrl}/meetings`, { params: query })
-      .then(async (response) => {
-        const transformedMeetings = response.data.map(meeting => {
-          return {
-            ...meeting,
-            start: meeting.date,
-            end: meeting.endDate,
-            url: meeting.url,
-            title: meeting.title || 'Default Title',
-            extendedProps: {
-              description: meeting.description || 'No description provided'
-            }
-          };
-        });
-  
-        await commit('SET_MEETINGS', transformedMeetings);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the meetings:', error);
+    const { getAccessTokenSilently } = useAuth0();
+    try {
+      const token = await getAccessTokenSilently();
+    console.log('token', token)
+      const response = await axios.get(`${apiUrl}/meetings`, {
+        params: query,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
-  },  
+
+      const transformedMeetings = response.data.map(meeting => ({
+        ...meeting,
+        start: meeting.date,
+        end: meeting.endDate,
+        url: meeting.url,
+        title: meeting.title || 'Default Title',
+        extendedProps: {
+          description: meeting.description || 'No description provided'
+        }
+      }));
+
+      commit('SET_MEETINGS', transformedMeetings);
+    } catch (error) {
+      console.error('There was an error fetching the meetings:', error);
+    }
+  },
+
 
 async addMeeting({ dispatch }, newEvent) {
     try {
@@ -61,27 +70,6 @@ async addMeeting({ dispatch }, newEvent) {
     }
   },
 
-  async updateMeeting({ commit }, { id, updatedData }) {
-    
-      try{
-      await axios.put(`${apiUrl}/meetings/${id}`, updatedData)
-        commit('UPDATE_MEETING', updatedMeeting);
-      }
-      catch(error){
-    
-      };
-  },
- async deleteMeeting({ commit , dispatch}, meetingId) {
-    return await axios.delete(`${apiUrl}/meetings/${meetingId}`)
-
-      .then(async() => {
-        await dispatch('fetchMeetings'); 
-        commit('DELETE_MEETING', meetingId);
-      })
-      .catch(error => {
-        console.error('There was an error deleting the meeting:', error);
-      });
-  }
 };
 
 const getters = {
