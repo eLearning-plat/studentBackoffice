@@ -69,7 +69,7 @@ const selectorsBar = computed(() => props.type === 'grouped' ? GroupedBar.select
       :margin="margin"
     >
       <ChartCrosshair v-if="showTooltip" :colors="colors" :items="legendItems" :custom-tooltip="customTooltip" :index="index" />
-
+      <!-- @vue-expect-error -->
       <VisBarComponent
         :x="(d: Data, i: number) => i"
         :y="categories.map(category => (d: Data) => d[category]) "
