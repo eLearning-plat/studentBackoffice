@@ -14,11 +14,12 @@ import { Button } from "../ui/button";
 const auth0 = useAuth0();
 const user = auth0.user;
 const isAuthenticated = auth0.isAuthenticated;
+const apiUrl = import.meta.env.VITE_APP_API_URL_LOCAL;
 
 function logout() {
   auth0.logout({
     logoutParams: {
-      returnTo: window.location.origin,
+      returnTo: "http://localhost:5173",
     },
   });
 }
@@ -72,15 +73,14 @@ function logout() {
           >
         </MenuItem>
         <MenuItem v-slot="{ active }">
-          <Button
-            @click="logout"
+          <a
+             @click="logout"
+            :href="apiUrl"
             :class="[
               active ? 'bg-gray-100' : '',
-              'w-full text-start block px-4 py-2 text-sm text-gray-700',
+              'block px-4 py-2 text-sm text-gray-700',
             ]"
-            variant="Gost"
-            >Sign out</Button
-          >
+            >Sign out</a>
         </MenuItem>
       </MenuItems>
     </transition>
