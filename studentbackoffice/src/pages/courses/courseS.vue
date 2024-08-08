@@ -100,10 +100,15 @@ export default {
       this.closeModal();
     }
   },
-  async created() {
+  setup() {
     const { getAccessTokenSilently } = useAuth0();
+    return { getAccessTokenSilently };
+  },
+  async created() {
+    
     try {
-      const token = await getAccessTokenSilently();
+      const token = await this.getAccessTokenSilently();
+
       console.log('token', token)
       await this.fetchCourses(token);
       

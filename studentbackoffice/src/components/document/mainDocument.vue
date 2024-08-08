@@ -34,15 +34,15 @@ export default {
       type: String,
       required: true,
     },
+  },  setup() {
+    const { getAccessTokenSilently } = useAuth0();
+    return { getAccessTokenSilently };
   },
   methods: {
     ...mapActions('documents', ['fetchDocuments', 'deletedocuments']),
     async deleteDocument(docId) {
-      const { getAccessTokenSilently } = useAuth0();
-
       try {
-        const token = await getAccessTokenSilently();
-      console.log('token', token)
+        const token = await this.getAccessTokenSilently();
         console.log('Deleting document with id:', docId);
         await this.deletedocuments(docId, token);
       
@@ -53,10 +53,9 @@ export default {
       }
     },
     async loadDocuments() {
-      const { getAccessTokenSilently } = useAuth0();
 
       try {
-        const token = await getAccessTokenSilently();
+        const token = await this.getAccessTokenSilently();
       console.log('token', token)
         const queryParams = {
           categoryID: this.category,

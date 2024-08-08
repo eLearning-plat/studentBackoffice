@@ -44,11 +44,8 @@ const actions = {
     }
   },
 
-  async addDocument({ dispatch }, { newDocument, categoryID, courseID }) {
-    try {
-      const { getAccessTokenSilently } = useAuth0();
-      const token = await getAccessTokenSilently();
-      
+  async addDocument({ dispatch }, { newDocument, categoryID, courseID , token}) {
+    try {  
       console.log('newDocument', newDocument);
       const res = await axios.post(`${apiUrl}/documents`, newDocument, {
         headers: {
@@ -56,10 +53,6 @@ const actions = {
           Authorization: `Bearer ${token}`
         }
       });
-
-      console.log('res.data', res.data);
-      console.log('categoryID', categoryID);
-      console.log('courseID', courseID);
       await dispatch('fetchDocuments', { categoryID, courseID, token });
       return res.data;
     } catch (error) {
@@ -68,10 +61,9 @@ const actions = {
     }
   },
 
-  async updatedocuments({ commit }, { id, updatedData }) {
+  async updatedocuments({ commit }, { id, updatedData , token}) {
     try {
-      const { getAccessTokenSilently } = useAuth0();
-      const token = await getAccessTokenSilently();
+      
 
       const response = await axios.put(`${apiUrl}/documents/${id}`, updatedData, {
         headers: {
@@ -85,10 +77,9 @@ const actions = {
     }
   },
 
-  async deletedocuments({ commit, dispatch }, documentId) {
+  async deletedocuments({ commit, dispatch }, {documentId, token}) {
     try {
-      const { getAccessTokenSilently } = useAuth0();
-      const token = await getAccessTokenSilently();
+    
 
       await axios.delete(`${apiUrl}/documents/${documentId}`, {
         headers: {
