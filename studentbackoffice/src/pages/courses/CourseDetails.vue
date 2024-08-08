@@ -32,10 +32,9 @@ const courses = computed(() => store.state.courses.courses);
 
 onMounted(async () => {
   try {
-    // Obtenir le jeton d'accès
+  
     const token = await getAccessTokenSilently();
-    
-    // Passer le jeton d'accès à l'action Vuex pour récupérer les détails du cours
+  
     course.value = await store.dispatch('courses/getCourseById', { courseId, token });
     console.log('Fetched course:', course.value);
   } catch (error) {
